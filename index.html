@@ -34,11 +34,10 @@
         <div><span class="material-icons">shelves</span>Books in Library <p class="total-books">0</p></div>
         <div><span class="material-icons">menu_book</span>Books Read <p class="total-read">0</p></div>
         <div><span class="material-symbols-outlined">book_2</span>Books Unread <p class="total-unread">0</p></div>
-
         <div><span class="material-symbols-outlined">keyboard_alt</span>User Input Entries <p class="total-manual">0</p></div>
         <div><span class="material-icons">newspaper</span>NYTimes Suggestions <p class="total-nytapi">0</p></div>
         <div><span class="material-symbols-outlined">api</span>Internet Search Entries <p class="total-olapi">0</p></div>
-        <div><span class="material-symbols-outlined">api</span>Auto Generated Entries <p class="total-generated">0</p></div>
+        <div><span class="material-symbols-outlined">rule_settings</span>Auto Generated Entries <p class="total-generated">0</p></div>
         
       </div>
     </section>
@@ -54,113 +53,50 @@
           <div class="choice">Book Suggestions</div>
           <div class="choice">Generate Library</div>
         </div>
-
       </div>
-
-      <!-- <div class="card" data-lib-index="0">
-        <span class="ribbon unread">Unread</span>
-        <div class="card-header cut-corner"></div>
-        <div class="card-container">
-          <div class="book-cover"><span class="material-symbols-outlined img">local_library</span></div>
-          <div class="card-contents">
-            <div class="book-title">Title Yeah I need One!</div>
-            <div class="book-author">Author Right?</div>
-            <div class="book-pages">Pages Some</div>
-          </div>
-          <div class="card-actions">
-            <div class="trash"><span class="material-symbols-outlined md">delete</span></div>
-            <div class="status"><span class="material-symbols-outlined md">visibility</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-lib-index="1">
-        <span class="ribbon unread">Unread</span>
-        <div class="card-header cut-corner"></div>
-        <div class="card-container">
-          <div class="book-cover"><span class="material-symbols-outlined img">local_library</span></div>
-          <div class="card-contents">
-            <div class="book-title">Title Yeah I need One!</div>
-            <div class="book-author">Author Right?</div>
-            <div class="book-pages">Pages Some</div>
-          </div>
-          <div class="card-actions">
-            <div class="trash"><span class="material-symbols-outlined md">delete</span></div>
-            <div class="status"><span class="material-symbols-outlined md">visibility</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-lib-index="2">
-        <span class="ribbon unread">Unread</span>
-        <div class="card-header cut-corner"></div>
-        <div class="card-container">
-          <div class="book-cover"><span class="material-symbols-outlined img">local_library</span></div>
-          <div class="card-contents">
-            <div class="book-title">Title Yeah I need One!</div>
-            <div class="book-author">Author Right?</div>
-            <div class="book-pages">Pages Some</div>
-          </div>
-          <div class="card-actions">
-            <div class="trash"><span class="material-symbols-outlined md">delete</span></div>
-            <div class="status"><span class="material-symbols-outlined md">visibility</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-lib-index="3">
-        <span class="ribbon unread">Unread</span>
-        <div class="card-header cut-corner"></div>
-        <div class="card-container">
-          <div class="book-cover"><span class="material-symbols-outlined img">local_library</span></div>
-          <div class="card-contents">
-            <div class="book-title">Title Yeah I need One!</div>
-            <div class="book-author">Author Right?</div>
-            <div class="book-pages">Pages Some</div>
-          </div>
-          <div class="card-actions">
-            <div class="trash"><span class="material-symbols-outlined md">delete</span></div>
-            <div class="status"><span class="material-symbols-outlined md">visibility</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-lib-index="4">
-        <span class="ribbon unread">Unread</span>
-        <div class="card-header cut-corner"></div>
-        <div class="card-container">
-          <div class="book-cover"><span class="material-symbols-outlined img">local_library</span></div>
-          <div class="card-contents">
-            <div class="book-title">Title Yeah I need One!</div>
-            <div class="book-author">Author Right?</div>
-            <div class="book-pages">Pages Some</div>
-          </div>
-          <div class="card-actions">
-            <div class="trash"><span class="material-symbols-outlined md">delete</span></div>
-            <div class="status"><span class="material-symbols-outlined md">visibility</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="card" data-lib-index="5">
-        <span class="ribbon unread">Unread</span>
-        <div class="card-header cut-corner"></div>
-        <div class="card-container">
-          <div class="book-cover"><span class="material-symbols-outlined img">local_library</span></div>
-          <div class="card-contents">
-            <div class="book-title">Title Yeah I need One!</div>
-            <div class="book-author">Author Right?</div>
-            <div class="book-pages">Pages Some</div>
-          </div>
-          <div class="card-actions">
-            <div class="trash"><span class="material-symbols-outlined md">delete</span></div>
-            <div class="status"><span class="material-symbols-outlined md">visibility</span></div>
-          </div>
-        </div>
-      </div> -->
-    
-
     </section>
+
+    <dialog id="book-form">
+      <div class="dialog">
+        <div class="dialog-header">
+          <div class="close">
+            <span class="material-symbols-outlined bold">close</span>
+          </div>
+        </div>
+        <div class="dialog-content">
+          <div class="dialog-card">
+            <div class="heading">Add a Book</div>
+
+            <form id="add-book">
+              <div class="form-group">
+                <label for="title">Title:</label><br>
+                <input type="text" id="title">
+              </div>
+              <div class="form-group">
+                <label for="author">Author:</label><br>
+                <input type="text" id="author">
+              </div>
+              <div class="form-group">
+                <label for="pages">Pages:</label><br>
+                <input type="number" id="pages">
+              </div>
+              <div class="form-group">
+                <label for="status">Status:</label>
+                <select name="status" id="status">
+                  <option value="">Have you read it?</option>
+                  <option value="read">Yes</option>
+                  <option value="unread">No</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <button type="submit" value="Add Book">Add Book</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </dialog>
+
     <footer>
       <div class="footer">
         <div class="line1"> Made with:

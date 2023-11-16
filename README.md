@@ -11,20 +11,20 @@ The Odin Project: Project - Library. Create a small Library app. I guess I misse
 
 #### Needed
 - [x] Add a simple array for collecting the book objects, the library.
-- [ ] Add a function that takes user's input to create a new book and saves it to the library.
+- [x] Add a function that takes user's input to create a new book and saves it to the library.
 - [x] Add a function that iterates through the library and displays each book on the page.
 - [x] Display the books ~either in a table or~ using cards.
-- [ ] Add a button to add a new book.
-- [ ] Add a form to take user's input.
-- [ ] You might want to explore dialogs and modal using the `<dialog>` tag.
-	- [ ] The form should have at least these fields: Title, Author, Number of Pages, and Reading status - read/unread.
-	- [ ] Feel free to add anything else you want.
-	- [ ] You'll have to use `event.preventDefault()`, read the documentation.
-- [ ] Add a button on each book’s display to remove the book from the library.
-	- [ ] You will need to associate your DOM elements with the actual book objects in some way.
-	- [ ] One easy solution is giving them a data-attribute that corresponds to the index of the library array.
-- [ ] Add a button on each book’s display to change its read status.
-	- [ ] To facilitate this you will want to create the function that toggles a book’s read status on your Book prototype instance.
+- [x] Add a button to add a new book.
+- [x] Add a form to take user's input.
+- [x] You might want to explore dialogs and modal using the `<dialog>` tag.
+	- [x] The form should have at least these fields: Title, Author, Number of Pages, and Reading status - read/unread.
+	- [x] Feel free to add anything else you want.
+	- [x] You'll have to use `event.preventDefault()`, read the documentation.
+- [x] Add a button on each book’s display to remove the book from the library.
+	- [x] You will need to associate your DOM elements with the actual book objects in some way.
+	- [x] One easy solution is giving them a data-attribute that corresponds to the index of the library array.
+- [x] Add a button on each book’s display to change its read status.
+	- [x] To facilitate this you will want to create the function that toggles a book’s read status on your Book prototype instance.
 
 ## Extras I added because, well I wanted them:
 - [ ] Use localStorage

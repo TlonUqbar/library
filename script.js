@@ -26,14 +26,15 @@ const classics = [
 
 const empty = document.querySelector(".empty-list");
 const cards = document.querySelectorAll(".card");
+const choices = document.querySelectorAll(".choice");
 const menuItems = document.querySelectorAll(".menu-item");
 const gallery = document.querySelector("#gallery");
-
-
 
 let library = [];
 let randomClassics = [];
 
+
+// Book Constructor
 function Book(title, author="", pages=0, read="unread"){
   this.title = title;
   this.author = author;
@@ -70,11 +71,10 @@ const generateRandomPicks = (array, size) => {
 
 function generateLibrary() {
   randomClassics.forEach( (arr) => { 
-    
     let book = new Book(arr[0], arr[1], arr[2]);
     book.process("Generated");
-    // library.push(book);
-    observedLibrary.push(book); 
+    // library.push(book);  
+    observedLibrary.push(book); // pushing to library via proxy
   })
 }
 
@@ -157,13 +157,11 @@ const removeItem = (e) => {
   e.preventDefault();
   let card = e.target.parentNode.parentNode.parentNode;
   let index = card.dataset.libIndex;
-  card.remove();
-  console.log(index);
-  // Add code to remove book object from Library
-  library.splice(index,1);
-  // gallery.querySelectorAll(".card").remove();
-  libraryStats();
-  // displayLibrary();  // redraw library contents
+  library.splice(index,1);  
+  libraryStats();  
+  gallery.querySelectorAll(".card").forEach( (card) => card.remove() );
+  displayLibrary();  // redraw library contents
+  if( library.length === 0) empty.classList.remove("hide"); // when empty show empty message
 }
 
 
@@ -223,6 +221,38 @@ const libraryObserver = {
 
 const observedLibrary = new Proxy(library, libraryObserver);
 
+//  Book Add via User Input and Book Modal
+const addBookBtn = document.querySelector(".add-book");
+const bookModal = document.querySelector("#book-form");
+const closeBookModal = document.querySelector("#book-form .close");
+const bookForm = document.querySelector("#book-form form");
+
+addBookBtn.addEventListener("click", () => { bookModal.showModal() });
+closeBookModal.addEventListener("click", () => { bookModal.close() } );
+bookForm.addEventListener("submit", (e) => { addNewBook(e) });
+
+const addNewBook = (e) => {
+  e.preventDefault();
+  const formFields = e.target.elements;
+  let title = formFields.title.value;
+  let author = formFields.author.value;
+  let pages = formFields.pages.value;
+  let status = formFields.status.value;
+  let book = new Book(title, author, pages, status);
+
+  book.processed = "UserInput";
+  // library.push(book);
+  observedLibrary.push(book);  // pushing via proxy
+  gallery.querySelectorAll(".card").forEach( (card) => card.remove() );
+  displayLibrary();  // remove all and redraw
+  bookForm.reset();
+  bookModal.close(); 
+}
+
+
+
 randomClassics = generateRandomPicks(classics, 10);
 generateLibrary();
 displayLibrary();
+
+
