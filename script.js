@@ -29,10 +29,8 @@ const cards = document.querySelectorAll(".card");
 const choices = document.querySelectorAll(".choice");
 const menuItems = document.querySelectorAll(".menu-item");
 const gallery = document.querySelector("#gallery");
-
 let library = [];
 let randomClassics = [];
-
 
 // Book Constructor
 function Book(title, author="", pages=0, read="unread"){
@@ -49,7 +47,6 @@ function Book(title, author="", pages=0, read="unread"){
   this.updatePages = (newPages) => { this.pages = newPages };
   this.process = (type) => { this.processed = type};
 }
-
 
 // Generator to get a random item from the collection/array
 function* shuffle(array) {
@@ -80,7 +77,6 @@ function generateLibrary() {
 
 function displayLibrary(){
   if( library.length === 0 ) return;
-
   empty.classList.add("hide");
 
   library.forEach( (book, index, array) => {
@@ -150,7 +146,13 @@ function displayLibrary(){
   
     trash.addEventListener("click", (e) => removeItem(e) );
     status.addEventListener("click", (e) => changeStatus(e) );
-  } )
+  })
+}
+
+function refresh(){
+  libraryStats();  // update stats
+  gallery.querySelectorAll(".card").forEach( (card) => card.remove() ); // remove all
+  displayLibrary();  // redraw library contents
 }
 
 const removeItem = (e) => {
@@ -158,16 +160,13 @@ const removeItem = (e) => {
   let card = e.target.parentNode.parentNode.parentNode;
   let index = card.dataset.libIndex;
   library.splice(index,1);  
-  libraryStats();  
-  gallery.querySelectorAll(".card").forEach( (card) => card.remove() );
-  displayLibrary();  // redraw library contents
-  if( library.length === 0) empty.classList.remove("hide"); // when empty show empty message
+  refresh();
+  if( library.length === 0) empty.classList.remove("hide"); // show empty library message
 }
 
 
 const changeStatus = (e) => {
   e.preventDefault();
- 
   let card = e.target.parentNode.parentNode.parentNode;
   let statusBanner = card.querySelector(".ribbon");
   let index = card.dataset.libIndex;
@@ -184,7 +183,6 @@ const changeStatus = (e) => {
   libraryStats();
 }
 
-
 const libraryStats = () => {
   let total_books = library.length;
   let total_read = library.filter( ({read}) => read === "read" ).length;
@@ -193,20 +191,13 @@ const libraryStats = () => {
   let olapi_stats = library.filter( ({processed}) => processed === 'OLAPI').length;
   let nytapi_stats = library.filter( ({processed}) => processed === 'NYTAPI').length;
   let generated_stats = library.filter( ({processed}) => processed === 'Generated').length;
-  const total = document.querySelector(".total-books");
-  const read = document.querySelector(".total-read");
-  const unread = document.querySelector(".total-unread");
-  const manual = document.querySelector(".total-manual");
-  const olapi = document.querySelector(".total-olapi");
-  const nytapi = document.querySelector(".total-nytapi");
-  const genrated = document.querySelector(".total-generated");
-  total.textContent = total_books;
-  read.textContent = total_read;
-  unread.textContent = total_unread;
-  manual.textContent = manual_stats;
-  olapi.textContent = olapi_stats;
-  nytapi.textContent = nytapi_stats;
-  genrated.textContent = generated_stats;
+  document.querySelector(".total-books").textContent = total_books;;
+  document.querySelector(".total-read").textContent = total_read;
+  document.querySelector(".total-unread").textContent = total_unread;
+  document.querySelector(".total-manual").textContent = manual_stats;
+  document.querySelector(".total-olapi").textContent = olapi_stats;
+  document.querySelector(".total-nytapi").textContent = nytapi_stats;
+  document.querySelector(".total-generated").textContent = generated_stats;
 }
 
 const libraryObserver = {
@@ -221,7 +212,8 @@ const libraryObserver = {
 
 const observedLibrary = new Proxy(library, libraryObserver);
 
-//  Book Add via User Input and Book Modal
+//  Add New Book via User Input using Modal (Book Modal)
+
 const addBookBtn = document.querySelector(".add-book");
 const bookModal = document.querySelector("#book-form");
 const closeBookModal = document.querySelector("#book-form .close");
@@ -239,17 +231,166 @@ const addNewBook = (e) => {
   let pages = formFields.pages.value;
   let status = formFields.status.value;
   let book = new Book(title, author, pages, status);
-
   book.processed = "UserInput";
   // library.push(book);
   observedLibrary.push(book);  // pushing via proxy
-  gallery.querySelectorAll(".card").forEach( (card) => card.remove() );
-  displayLibrary();  // remove all and redraw
+  refresh();
   bookForm.reset();
   bookModal.close(); 
 }
 
 
+// NYTimes Bestseller Booklist API and related functions and Modal
+
+let NYTimesBooks = JSON.parse(localStorage.getItem("NYTBooks"));
+let listURL = "https://api.nytimes.com/svc/books/v3/lists/overview.json"
+let key = "?api-key=pHsIBLoI7Z6nek1XOKNkQljEnuQHRDmJ"
+let listResults = '';
+let listNames = [];
+let formattedResults = [];
+let suggestedBooks = [];
+let randomSuggestions = [];
+const listKeys = ["list_name", "books"];
+const bookKeys = ["author", "book_image", "primary_isbn13", "primary_isbn10", "publisher", "rank", "title", "list_name", "pages"]
+
+const suggestBtn = document.querySelector(".suggest");
+const suggestDialog = document.querySelector("#suggestions");
+const closeSuggestModal  = document.querySelector("#suggestions .close");
+
+const clearSuggestions = () => {
+  const dialog = document.querySelector("#suggestions > .dialog > .dialog-content");
+  dialog.innerHTML = '';
+  randomSuggestions = [];
+  NYTimesBooks = JSON.parse(localStorage.getItem("NYTBooks"));
+}
+
+suggestBtn.addEventListener("click", () => { populateSuggestions(); suggestDialog.showModal(); } );
+closeSuggestModal.addEventListener("click", () => { suggestDialog.close(); clearSuggestions(); });
+
+
+function fetchBooks(){
+  // If list exists in localStorage skip API call
+  if( NYTimesBooks )  return; 
+  
+  fetch(`${listURL}${key}`, {method: "GET", mode: 'cors', headers: [
+      ["Content-Type", "application/json"], ["Content-Type", "text/plain"] ] })
+      .then( (response) => response.json() )
+      .then( (json) => { listResults = json; console.log("results",json); })
+      .then( () => { listResults.results.lists.forEach(elem => listNames.push(elem)) })
+      .then( () => { listNames.forEach(obj => formattedResults.push(extract(obj, ...listKeys)))})
+      .then( () => extractBooks() )
+      .then( () => getRandomBooks(suggestedBooks, 10))
+      .then( () => localStorage.setItem("NYTBooks", JSON.stringify(suggestedBooks)) )
+      .catch( error => console.log('Request failed', error));
+}
+
+const extractBooks = () => {
+  formattedResults.forEach( (list) => {
+  let listname = list.list_name;
+    list.books.forEach( (book) => {
+      suggestedBooks.push(extract( book, listname,...bookKeys));
+    })
+  })
+};
+
+const extract = (obj, name="", ...keys) => {
+  const newObject = Object.assign({});
+  Object.keys(obj).forEach((key) => {
+    if( name ){
+      newObject["list_name"] = name;
+      newObject["pages"] = 0;
+    }
+    if(keys.includes(key)){
+        newObject[key] = obj[key];
+        delete obj[key];
+     };
+  });
+  return newObject;
+};
+
+const getRandomBooks = (array, size) => {
+  let smallSet = shuffle(array);
+  for(let i=0; i<size; i++){
+    randomSuggestions.push( smallSet.next().value);
+  }
+  return randomSuggestions;
+}
+
+function populateSuggestions(){
+  if( NYTimesBooks == null ){
+    fetchBooks(); // this call should only be made once
+  } else {
+    getRandomBooks(NYTimesBooks, 10); // generate list every time
+  }
+
+  const dialog = document.querySelector("#suggestions > .dialog > .dialog-content");
+  const heading = document.createElement("div");
+
+  heading.classList = ["heading"];
+  heading.textContent = "NYTimes Bestseller Book Suggestions";
+  dialog.append(heading);
+
+  randomSuggestions.forEach( (book, index, array ) => {
+    const card = document.createElement("div");
+    const imgDiv = document.createElement("div");
+    const img = document.createElement("img");
+    const title = document.createElement("div");
+    const author = document.createElement("div");
+    const button = document.createElement("a");
+
+    button.dataset.index = index;
+    img.src = book.book_image;
+    title.textContent = book.title;
+    author.textContent = book.author;
+    imgDiv.append(img);
+    imgDiv.classList = ["sbook-img"];
+    title.classList = ["sbook-title"];
+    author.classList = ["sbook-author"];
+    button.classList = ["add"];
+    button.textContent = "Add";
+    button.dataset.index = index;
+    card.classList = (index%2 === 0) ?  ["dialog-card even"] : ["dialog-card odd"]; 
+    card.append(imgDiv);
+    card.append(title);
+    card.append(author);
+    card.append(button);
+    dialog.append(card);
+
+    button.addEventListener("click", (e) => { addSuggestedBook(e, button.dataset.index) });
+  })
+}
+
+const addSuggestedBook = (e, index) => {
+  e.preventDefault();
+  let title = randomSuggestions[index].title;
+  let author = randomSuggestions[index].author;
+  let cover = randomSuggestions[index].book_image;
+  let isbn13 = randomSuggestions[index].primary_isbn13;
+  let isbn10 = randomSuggestions[index].primary_isbn10;
+  let book = new Book(title, author);
+  book.cover = cover;
+  book.isbn10 = isbn10;
+  book.isbn13 = isbn13;
+  book.processed = "NYTAPI";
+  let isbn = ( !isbn13) ? isbn10 : isbn13;
+  updatePages(book, isbn);
+  observedLibrary.push(book);
+}
+
+function updatePages(book, isbn){
+  const url = `https://openlibrary.org/search.json?q=${isbn}&fields=number_of_pages_median&availability&limit=1`;
+  let isbnResults = '';
+
+  fetch(`${url}`, {method: "GET", mode: "cors", headers: [] })
+  .then( (response) => response.json() )
+  .then( (json) => { isbnResults = json; })
+  .then( () => book.updatePages(isbnResults.docs[0].number_of_pages_median))
+  .then( () => refresh() )
+  .catch( error => console.log('Request failed', error));
+}
+
+// Make call to get NYTimes Books on load, they'll be saved to localStorage
+fetchBooks();
 
 randomClassics = generateRandomPicks(classics, 10);
 generateLibrary();

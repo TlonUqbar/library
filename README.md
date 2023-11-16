@@ -27,9 +27,9 @@ The Odin Project: Project - Library. Create a small Library app. I guess I misse
 	- [x] To facilitate this you will want to create the function that toggles a book’s read status on your Book prototype instance.
 
 ## Extras I added because, well I wanted them:
-- [ ] Use localStorage
-- [ ] Add the Open Library API to find a book and add it to the library.
-- [ ] Add the NYTimes Bestsellers Book API to generate random suggestions and add to library.
+- [x] Use localStorage
+- [] Add the Open Library API to find a book and add it to the library.
+- [x] Add the NYTimes Bestsellers Book API to generate random suggestions and add to library.
 - [x] Add a static list of books to generate a random starting library.
 - [X] Extract Library Statistics and update in real-time.
 

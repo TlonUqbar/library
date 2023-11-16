@@ -430,6 +430,13 @@ footer{
   display: none;
 }
 
+.odd{
+  background-color: antiquewhite;
+}
+
+.even{
+  background-color: burlywood;
+}
 
 /* ------------------------------------------------
 |             MODALS - SHARED                     |
@@ -473,7 +480,7 @@ dialog:focus{
 
 .dialog-content{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   grid-template-rows: auto ;
   gap: 25px 15px;
 }
@@ -565,6 +572,75 @@ form#add-book{
   color: var(--alt-bg-color);
   border: 1px solid var(--alt-text-color);
 }
+
+
+/* ------------------------------------------------
+|        MODALS - SUGGESTED BOOKS                 |
+--------------------------------------------------*/
+
+#suggestions{
+  width: 70%;
+  height: 70%;
+}
+
+
+#suggestions .heading{
+  grid-column: 1/-1;
+  justify-self: center;
+  font-size: 2.5rem;
+  color: var(--accent-color);
+}
+.dialog-card{
+  border: 1px solid var(--alt-bg-color);
+  display: grid;
+  place-items: center;
+  gap: 5px; 
+  border-radius: 10px;
+  padding: 10px;
+  
+}
+
+.sbook-img{
+  width: 82px;
+  height: 122px;
+  border: 1px solid rebeccapurple;
+  justify-self: center;
+}
+
+.sbook-img img{
+  width: 80px;
+  height: 120px;
+}
+
+.sbook-title{
+  color: var(--main-bg-color);
+  font-size: 1.1rem;
+  font-weight: 500;
+  word-break: break-word;
+  text-align: center;
+  
+}
+
+.sbook-author{
+  color: var(--dark-stats);
+  font-size: 1rem;
+}
+
+.add{
+  padding: 4px 10px;
+  border: 1px solid rebeccapurple;
+  color: var(--alt-bg-color);
+  border-radius: 6px;
+  font-weight: 600;
+  font-family: "Fira Code";
+}
+
+.add:hover{
+  background-color:rgba(32, 0, 32, 1);
+  color: var(--text-color);
+}
+
+
 
 /* ------------------------------------------------
 |   MEDIA QUERIES - SMALL SCREENS                 |
