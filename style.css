@@ -69,8 +69,6 @@ header{
 
 .tagline{
   font-size: 1.8rem;
-  /* padding-right: 250px; */
-  /* transform: translateX(-120px) */
 }
 
 /* ------------------------------------------------
@@ -80,7 +78,7 @@ header{
 #menu{
   grid-area: menu;
   display: grid;
-  grid-template-columns: minmax(280px, 1fr);
+  grid-template-columns: minmax(250px, 1fr);
   grid-template-rows:  auto 1fr;
   background-color: var(--dark-menu);
   place-items: start center;
@@ -111,14 +109,14 @@ header{
 #stats{
   grid-area: stats;
   display: grid;
-  grid-template-columns: minmax(280px, 1fr);
+  grid-template-columns: minmax(250px, 1fr);
   grid-template-rows: auto 1fr;
   background-color: var(--dark-stats);
   place-items: start center;
 }
 
 .stats-container{
-  gap: 20px;
+  gap: 15px;
 }
 
 .total-books, 
@@ -126,7 +124,8 @@ header{
 .total-unread,
 .total-manual,
 .total-olapi,
-.total-nytapi{
+.total-nytapi,
+.total-generated{
   text-align: center;
   font-size: 2rem;
 }
@@ -161,6 +160,7 @@ header{
   place-items:  center ;
   grid-column: 1/-1;
   grid-template-rows: 1fr 100px 1fr;
+  margin: -20px -30px -20px;
 }
 
 .face{
@@ -200,7 +200,11 @@ header{
   border: 1px solid var(--alt-bg-color);
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
-  padding: 20px 0;
+  /* padding: 20px 0; */
+  position: relative;
+  border-top-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 40px 30px;
 }
 
 .card-container{
@@ -208,6 +212,12 @@ header{
   grid-template-columns: 130px 1fr;
   grid-template-rows: 1fr auto;
   padding: 0 20px 20px;
+}
+
+.card-header{
+  height: 20px;
+  border-top-right-radius: 10px;
+  border-bottom:none;
 }
 
 .card-contents{
@@ -255,11 +265,95 @@ header{
 }
 
 .img{
-  /* font-size: 3rem; */
   position: relative;
   top: 40px;
   left: 24px;
 }
+
+.read{
+  background-color: green;
+  color: var(--base-text-color);
+  font-weight: 500;
+  text-align: center;
+}
+
+.unread{
+  background-color: red;
+  color: var(--main-bg-color);
+  font-weight: 500;
+  text-align: center;
+}
+
+/* ------------------------------------------------
+|             CARDS - RIBBON EFFECT               |
+--------------------------------------------------*/
+
+.card > span{
+  justify-self: right;
+  position: absolute;
+  padding: 5px 30px;
+  transform: rotate(45deg);
+  top: 11px;
+  right: -26px;
+  width: 105px;
+  z-index: 2;
+  text-transform: capitalize;
+}
+
+ .card > span::before{
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  content:'';
+  border-top: 16px solid var(--main-bg-color);
+  border-right: 16px solid transparent;
+  border-bottom: 16px solid transparent;
+  border-left: 16px solid var(--main-bg-color);
+  z-index:2;
+}
+
+.card > span::after{
+  position: absolute;
+  right:-2px;
+  top: -2px; 
+  content:'';
+  border-top: 16px solid var(--main-bg-color);
+  border-bottom: 16px solid transparent;
+  border-left: 16px solid transparent;
+  border-right: 16px solid var(--main-bg-color);
+  z-index: 2;  
+}
+
+
+/* ------------------------------------------------
+|             CARDS - CUT CORNER EFFECT               |
+--------------------------------------------------*/
+
+.cut-corner {
+  position:relative; 
+  background-color: var(--dark-card); 
+  display: inline-block;
+}
+
+.cut-corner:before {
+  position:absolute; 
+  left:0px; 
+  top: 0px;
+  content:'';
+  border-top: 20px solid var(--alt-bg-color);
+  border-right: 20px solid transparent;
+}
+
+.cut-corner:after {
+  position:absolute; 
+  left:-4px; 
+  top:-4px;
+  content:'';
+  border-top: 20px solid var(--main-bg-color);
+  border-right: 20px solid transparent;
+}
+
+
 
 /* ------------------------------------------------
 |       FOOTER SECTION - BOTTOM BAR               |
@@ -394,6 +488,5 @@ footer{
 
   .empty-list{
     padding:20px 0;
-    margin: -20px -30px -10px;
   }
 }

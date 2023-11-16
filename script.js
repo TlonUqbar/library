@@ -27,7 +27,7 @@ const classics = [
 const empty = document.querySelector(".empty-list");
 const cards = document.querySelectorAll(".card");
 const menuItems = document.querySelectorAll(".menu-item");
-
+const gallery = document.querySelector("#gallery");
 
 
 
@@ -59,8 +59,6 @@ function* shuffle(array) {
   }
 }
 
-
-
 const generateRandomPicks = (array, size) => {
   let copy = shuffle(array);
   let temp = [];
@@ -75,10 +73,156 @@ function generateLibrary() {
     
     let book = new Book(arr[0], arr[1], arr[2]);
     book.process("Generated");
-    library.push(book);
+    // library.push(book);
+    observedLibrary.push(book); 
   })
 }
 
+function displayLibrary(){
+  if( library.length === 0 ) return;
+
+  empty.classList.add("hide");
+
+  library.forEach( (book, index, array) => {
+    const card = document.createElement("div");
+    const ribbon = document.createElement("span");
+    const header = document.createElement("div");
+    const container = document.createElement("div");
+    const cover = document.createElement("div");
+    const coverAlt = document.createElement("span");
+    const coverImg = document.createElement("img");
+    const contents = document.createElement("div");
+    const title = document.createElement("div");
+    const author = document.createElement("div");
+    const pages = document.createElement("div");
+    const actions = document.createElement("div");
+    const trash = document.createElement("div");
+    const trashIcon = document.createElement("span");
+    const status = document.createElement("div");
+    const statusIcon = document.createElement("span");
+
+    card.classList = ["card"];
+    card.dataset.libIndex = index;
+    ribbon.classList = [`ribbon ${book.read}`];
+    ribbon.textContent = book.read;
+    header.classList = ["card-header cut-corner"];
+    container.classList = ["card-container"];
+    cover.classList = ["book-cover"];
+  
+    if( !book.cover ){
+      coverAlt.classList = ["material-symbols-outlined img"]
+      coverAlt.textContent = "local_library";
+    } else {
+      coverImg.classList = ""
+      coverImg.src = book.cover;
+    }
+  
+    contents.classList = ["card-contents"];
+    title.classList = ["book-title"];
+    title.textContent = book.title;
+    author.classList = ["book-author"];
+    author.textContent = book.author;
+    pages.classList = ["book-pages"];
+    pages.textContent = book.pages;
+    actions.classList = ["card-actions"];
+    trash.classList = ["trash"];
+    trashIcon.classList = ["material-symbols-outlined md"];
+    trashIcon.textContent = "delete";
+    status.classList = ["status"];
+    statusIcon.classList = ["material-symbols-outlined md"];
+    statusIcon.textContent = "visibility";
+  
+    trash.append(trashIcon);
+    status.append(statusIcon);
+    actions.append(trash);
+    actions.append(status);
+    contents.append(title);
+    contents.append(author);
+    contents.append(pages);
+    ( !book.cover ) ? cover.append(coverAlt) : cover.append(coverImg);
+    container.append(cover);
+    container.append(contents);
+    container.append(actions);
+    card.append(ribbon);
+    card.append(header);
+    card.append(container);
+    gallery.append(card);
+  
+    trash.addEventListener("click", (e) => removeItem(e) );
+    status.addEventListener("click", (e) => changeStatus(e) );
+  } )
+}
+
+const removeItem = (e) => {
+  e.preventDefault();
+  let card = e.target.parentNode.parentNode.parentNode;
+  let index = card.dataset.libIndex;
+  card.remove();
+  console.log(index);
+  // Add code to remove book object from Library
+  library.splice(index,1);
+  // gallery.querySelectorAll(".card").remove();
+  libraryStats();
+  // displayLibrary();  // redraw library contents
+}
+
+
+const changeStatus = (e) => {
+  e.preventDefault();
+ 
+  let card = e.target.parentNode.parentNode.parentNode;
+  let statusBanner = card.querySelector(".ribbon");
+  let index = card.dataset.libIndex;
+  
+  if(statusBanner.classList.contains("read")){
+    statusBanner.classList.replace("read", "unread");
+    statusBanner.textContent = "unread";
+    library[index].changeStatus("unread");
+  } else{
+    statusBanner.classList.replace("unread", "read");
+    statusBanner.textContent = "read";
+    library[index].changeStatus("read");
+  }
+  libraryStats();
+}
+
+
+const libraryStats = () => {
+  let total_books = library.length;
+  let total_read = library.filter( ({read}) => read === "read" ).length;
+  let total_unread = library.filter( ({read}) => read === "unread" ).length;
+  let manual_stats = library.filter( ({processed}) => processed === 'UserInput').length;
+  let olapi_stats = library.filter( ({processed}) => processed === 'OLAPI').length;
+  let nytapi_stats = library.filter( ({processed}) => processed === 'NYTAPI').length;
+  let generated_stats = library.filter( ({processed}) => processed === 'Generated').length;
+  const total = document.querySelector(".total-books");
+  const read = document.querySelector(".total-read");
+  const unread = document.querySelector(".total-unread");
+  const manual = document.querySelector(".total-manual");
+  const olapi = document.querySelector(".total-olapi");
+  const nytapi = document.querySelector(".total-nytapi");
+  const genrated = document.querySelector(".total-generated");
+  total.textContent = total_books;
+  read.textContent = total_read;
+  unread.textContent = total_unread;
+  manual.textContent = manual_stats;
+  olapi.textContent = olapi_stats;
+  nytapi.textContent = nytapi_stats;
+  genrated.textContent = generated_stats;
+}
+
+const libraryObserver = {
+  set: function(target, property, value) {
+    if (property === 'length') {
+    }
+    target[property] = value;
+    libraryStats();
+    return true;
+  }
+};
+
+const observedLibrary = new Proxy(library, libraryObserver);
+
 randomClassics = generateRandomPicks(classics, 10);
 generateLibrary();
-
+displayLibrary();

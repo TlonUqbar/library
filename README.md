@@ -6,14 +6,14 @@ The Odin Project: Project - Library. Create a small Library app. I guess I misse
 ## Requirements:
 
 #### Setup
-- [ ] Set up your project with skeleton HTML/CSS and JS files.
-- [ ] Manually add a few books to your array so you can see the display.
+- [x] Set up your project with skeleton HTML/CSS and JS files.
+- [x] Manually add a few books to your array so you can see the display.
 
 #### Needed
-- [ ] Add a simple array for collecting the book objects, the library.
+- [x] Add a simple array for collecting the book objects, the library.
 - [ ] Add a function that takes user's input to create a new book and saves it to the library.
-- [ ] Add a function that iterates through the library and displays each book on the page.
-- [ ] Display the books either in a table or using cards.
+- [x] Add a function that iterates through the library and displays each book on the page.
+- [x] Display the books ~either in a table or~ using cards.
 - [ ] Add a button to add a new book.
 - [ ] Add a form to take user's input.
 - [ ] You might want to explore dialogs and modal using the `<dialog>` tag.
@@ -30,6 +30,6 @@ The Odin Project: Project - Library. Create a small Library app. I guess I misse
 - [ ] Use localStorage
 - [ ] Add the Open Library API to find a book and add it to the library.
 - [ ] Add the NYTimes Bestsellers Book API to generate random suggestions and add to library.
-- [ ] Add a static list of books to generate a random starting library.
-- [ ] Extract Library Statistics that are updated live.
+- [x] Add a static list of books to generate a random starting library.
+- [X] Extract Library Statistics and update in real-time.
 
