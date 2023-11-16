@@ -6,34 +6,37 @@
   <title>My Library</title>
   <link rel="shortcut icon" href="https://fav.farm/%F0%9F%93%9A" type="image/x-icon">
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+  <script src="//code.iconify.design/1/1.0.6/iconify.min.js"></script>
 </head>
 <body>
   <main>
     <header>
-      <div class="greeting">Logo</div>
-      <div class="message">Something about reading</div>
+      <div class="logo">ΒιβλιοΤεχ</div>
+      <div class="tagline">Tracking your reading since last time</div>
     </header>
 
     <section id="menu">
-      <div class="section-title">Menu</div>
+      <div class="section-title"><span class="material-icons lg">menu</span>Menu</div>
       <div class="menu-container">
-        <div class="add-book">Add Book Manually</div>
-        <div class="find-book">Find Book Online</div>
-        <div class="suggest">Get Book Suggestions</div>
-        <div class="generate">Auto Generate a Library</div>
+        <div class="add-book"><span class="material-symbols-outlined">library_add</span>Add Book Manually</div>
+        <div class="find-book"><span class="material-symbols-outlined">travel_explore</span>Find Book Online</div>
+        <div class="suggest"><span class="material-symbols-outlined">comment_bank</span>Get Book Suggestions</div>
+        <div class="generate"><span class="material-symbols-outlined">newsstand</span>Auto Generate a Library</div>
       </div>
     </section>
 
     <section id="stats">
-      <div class="section-title">Statistics</div>
+      <div class="section-title"><span class="material-symbols-outlined lg">bar_chart_4_bars</span>Statistics</div>
       <div class="stats-container">
-        <div>Books in Library <p class="total-books">0</p></div>
-        <div>Books Read <p class="total-read">0</p></div>
-        <div>Books Unread <p class="total-unread">0</p></div>
+        <div><span class="material-icons">shelves</span>Books in Library <p class="total-books">0</p></div>
+        <div><span class="material-icons">menu_book</span>Books Read <p class="total-read">0</p></div>
+        <div><span class="material-symbols-outlined">book_2</span>Books Unread <p class="total-unread">0</p></div>
 
-        <div>User Input Entries <p class="total-manual">0</p></div>
-        <div>NYTimes Suggestions <p class="total-nytapi">0</p></div>
-        <div>Internet Search Entries <p class="total-olapi">0</p></div>
+        <div><span class="material-symbols-outlined">keyboard_alt</span>User Input Entries <p class="total-manual">0</p></div>
+        <div><span class="material-icons">newspaper</span>NYTimes Suggestions <p class="total-nytapi">0</p></div>
+        <div><span class="material-symbols-outlined">api</span>Internet Search Entries <p class="total-olapi">0</p></div>
         
       </div>
     </section>
@@ -51,15 +54,22 @@
         </div>
 
       </div>
-    </div>
+    
 
     </section>
     <footer>
-      <div>
-        <p><br>Made with:
-        </p>
-        <p><br></p>
-        <p>Created by <a href="https://github.com/tlonuqbar" target="_blank">TlonUqbar</a> &copy; 2023.  All rights reserved.</p>
+      <div class="footer">
+        <div class="line1"> Made with:
+          <i class="iconify" data-icon="mdi-language-html5"></i>
+          <i class="iconify" data-icon="mdi-language-css3"></i>
+          <i class="iconify" data-icon="mdi-language-javascript"></i>
+          <i class="iconify" data-icon="mdi-api"></i>
+          <i class="iconify" data-icon="mdi-microsoft-visual-studio-code"></i>
+          <i class="iconify" data-icon="mdi-github"></i>
+          <i class="iconify" data-icon="mdi-linux"></i>
+          <i class="iconify" data-icon="mdi-coffee"></i>
+        </div>
+        <div class="line2"><p>Created by <a href="https://github.com/tlonuqbar" target="_blank">TlonUqbar</a> &copy; 2023.</p> <p> All rights reserved.</p></div>
       </div>
     </footer>
   </main>
