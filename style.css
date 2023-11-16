@@ -58,7 +58,7 @@ header{
   justify-items: center;
   align-items: center;
   grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
-  grid-template-columns: 300px 1fr auto; 
+  grid-template-columns: 300px 1fr 200px; 
   grid-area: header;
 }
 
@@ -69,6 +69,8 @@ header{
 
 .tagline{
   font-size: 1.8rem;
+  /* padding-right: 250px; */
+  /* transform: translateX(-120px) */
 }
 
 /* ------------------------------------------------
@@ -150,7 +152,6 @@ header{
   line-height: 2;
   display: grid;
   grid-column: 1 / -1;
-  
   place-items: start center;
 }
 
@@ -163,7 +164,7 @@ header{
 }
 
 .face{
-  font-size: 7rem;
+  font-size: 6.7rem;
   align-self: center;
 }
 
@@ -187,6 +188,77 @@ header{
 
 .choice:hover{
   color: var(--text-color);
+}
+
+/* ------------------------------------------------
+|        GALLERY SECTION - CARDS                  |
+--------------------------------------------------*/
+
+.card{
+  display: grid;
+  background-color: var(--dark-card);
+  border: 1px solid var(--alt-bg-color);
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  padding: 20px 0;
+}
+
+.card-container{
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  grid-template-rows: 1fr auto;
+  padding: 0 20px 20px;
+}
+
+.card-contents{
+  display: grid;
+  grid-template-columns: 1fr ;
+  grid-template-rows: 1fr auto;
+  place-items: start;
+  gap: 20px;
+}
+
+.card-actions{
+  display: grid;
+  grid-column: 2/ -1;
+  grid-template-columns: 25px 25px;
+  justify-self: end;
+  align-self: end;
+  gap: 15px;
+  align-items: center;
+  justify-items: center;
+}
+
+.book-cover{
+  height: 140px;
+  width: 100px;
+  border: 1px solid burlywood;
+  background-color: black;
+}
+
+.book-cover img{
+  height:138px;
+  width: 98px;
+}
+
+.book-title{
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.book-author{
+  font-size: 1.3rem;
+}
+
+.book-pages{
+  font-size: 1.1rem;
+}
+
+.img{
+  /* font-size: 3rem; */
+  position: relative;
+  top: 40px;
+  left: 24px;
 }
 
 /* ------------------------------------------------
@@ -249,10 +321,20 @@ footer{
 }
 
 .material-icons.lg,
-.material-symbols-outlined.lg{
+.material-symbols-outlined.lg,
+.material-icons.img,
+.material-symbols-outlined.img{
   font-size: 48px !important;
 }
 
+
+/* ------------------------------------------------
+|                 UTILITIES                       |
+--------------------------------------------------*/
+
+.hide{
+  display: none;
+}
 
 
 /* ------------------------------------------------
@@ -283,6 +365,7 @@ footer{
   .tagline{
     font-size: 1.4rem;
     padding-bottom: 20px;
+    padding-right: 0;
   }
 
   .menu-container div:last-child{
@@ -300,17 +383,17 @@ footer{
   }
 
   #gallery{
-    padding:0;
-    gap: 0;
+    /* padding:0; */
+    /* gap: 0px 20px; */
   }
 
   .reading-list{
     place-items: center;
-    /* padding-top: 20px; */
     line-height: 1;
   }
 
   .empty-list{
     padding:20px 0;
+    margin: -20px -30px -10px;
   }
 }
