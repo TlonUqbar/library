@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700&display=swap');
+
+:root{
+  --base-text-color: rgba(255, 216, 133, 1);
+  --main-bg-color: rgba(32, 0, 32, 1);
+  --alt-bg-color: rgba(31, 48, 57, 1);
+  --main-text-color: color-mix( in srgb, var(--base-text-color), black 25%);
+  --alt-text-color: rgba(210, 210, 210, 1);
+  --accent-color: salmon;
+  --darker-main: color-mix( in srgb, var(--main-bg-color) 25%, black);
+  --dark-footer: color-mix( in srgb, var(--main-bg-color) 25%, black 50%);
+  --dark-card: color-mix( in srgb, var(--main-bg-color) 55%, black 25%);
+  --dark-menu: color-mix( in srgb, var(--main-bg-color) 50%, rgba(200, 200, 200, 1) 10%);
+  --dark-stats: color-mix( in srgb, var(--main-bg-color), rgba(255, 255, 255, 1) 15% );
+  --text-color:rgba(231, 146, 49, 1);
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html{
+  background-color: var(--main-bg-color);
+}
+
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: var(--base-text-color);
+}
+
+main{
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: 100px 1fr;
+
+  grid-template-areas: 
+    "header header header"
+    "menu gallery stats"
+    "footer footer footer";
+}
+
+
+/* ------------------------------------------------
+|        HEADER SECTION - TOP BAR                 |
+--------------------------------------------------*/
+
+header{
+  font-family: "Roboto";
+  font-size: 1.5rem;
+  background-color: var(--darker-main);
+
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  grid-template-rows: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: 1fr 1fr; 
+  grid-area: header;
+}
+
+/* ------------------------------------------------
+|          MENU SECTION - LEFT SIDE BAR           |
+--------------------------------------------------*/
+
+#menu{
+  grid-area: menu;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr);
+  grid-template-rows:  auto 1fr;
+  background-color: var(--dark-menu);
+  place-items: start center;
+  
+}
+
+/* ------------------------------------------------
+|        STATS SECTION - RIGHT SIDE BAR           |
+--------------------------------------------------*/
+
+#stats{
+  grid-area: stats;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr);
+  grid-template-rows: auto 1fr;
+  background-color: var(--dark-stats);
+  place-items: start center;
+}
+
+/* ------------------------------------------------
+|     GALLERY SECTION - MAIN CONTENT              |
+--------------------------------------------------*/
+
+#gallery{
+  grid-area: gallery;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-rows:  repeat(auto, minmax(250px, 1fr));
+  padding: 20px 30px;
+  gap: 30px;
+  color: var(--main-text-color);
+}
+
+
+/* ------------------------------------------------
+|       FOOTER SECTION - BOTTOM BAR               |
+--------------------------------------------------*/
+
+footer{
+  display: grid;
+  grid-area: footer;
+  font-family: "Fira Code";
+  background-color: var(--dark-footer);
+  grid-template-columns: 1fr;
+  align-items: center;
+  justify-items: center;
+  padding: 20px 0;
+}
