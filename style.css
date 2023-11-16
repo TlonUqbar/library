@@ -97,12 +97,57 @@ header{
   grid-area: gallery;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-template-rows:  repeat(auto, minmax(250px, 1fr));
+  grid-template-rows: 100px auto;
   padding: 20px 30px;
   gap: 30px;
   color: var(--main-text-color);
 }
 
+.reading-list{
+  font-size: 2.2rem;
+  font-weight: 500;
+  line-height: 2;
+  display: grid;
+  grid-column: 1 / -1;
+  
+  place-items: start center;
+}
+
+.empty-list{
+  background-color: black;
+  /* border-radius: 50%; */
+  display: grid;
+  place-items:  center ;
+  grid-column: 1/-1;
+  grid-template-rows: 1fr 100px 1fr;
+}
+
+.face{
+  font-size: 7rem;
+  align-self: center;
+}
+
+.ohnoes{
+  font-size: 2rem;
+  text-align: center;
+}
+
+.choices{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  place-items: center;
+  font-weight: 500;
+  font-size: 1.5rem;
+}
+
+.choice{
+  cursor: pointer;
+}
+
+.choice:hover{
+  color: var(--text-color);
+}
 
 /* ------------------------------------------------
 |       FOOTER SECTION - BOTTOM BAR               |
