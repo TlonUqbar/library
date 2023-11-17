@@ -48,10 +48,10 @@
         <div class="face">\(o_o)/</div>
         <div class="ohnoes">OH NOES! <br> Empty Library!</div>
         <div class="choices">
-          <div class="choice">Add A New Book</div>
-          <div class="choice">Online Book Search</div>
-          <div class="choice">Book Suggestions</div>
-          <div class="choice">Generate Library</div>
+          <div class="choice-add">Add A New Book</div>
+          <div class="choice-search">Online Book Search</div>
+          <div class="choice-suggest">Book Suggestions</div>
+          <div class="choice-generate">Generate Library</div>
         </div>
       </div>
     </section>
@@ -103,7 +103,261 @@
           <div class="close"><span class="material-symbols-outlined">close</span></div>
         </div>
         <div class="dialog-content">
-          
+
+        </div>
+      </div>
+    </dialog>
+
+
+    <dialog id="search">
+      <div class="dialog">
+        <div class="dialog-header">
+          <div class="close"><span class="material-symbols-outlined bold">close</span></div>
+          <div class="dialog-content" style="">
+            
+            <div class="dialog-card">
+              <div class="heading">Internet Book Search</div>
+              <form id="search-book">
+                <div class="form-group">
+                  <label for="query">Title or ISBN</label>
+                  <input type="text" id="query" name="query">
+                </div>
+                <div class="form-group">
+                  <button>Search</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="dialog-results" style="display: none;">
+            <div class="heading">Internet Book Search Results</div>
+
+            <div class="results-card odd">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="0">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card even">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="1">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card odd">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="2">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card even">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="3">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card odd">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="4">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+
+            </div>
+            <div class="results-card even">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add" >
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="5">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card odd">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="6">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card even">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="7">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card odd">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">add</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="8">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="results-card even">
+              <div class="results-cover">
+                <img src="https://covers.openlibrary.org/b/olid/OL28172760M-S.jpg" alt="">
+                <div class="results-add">
+                  <span class="material-symbols-outlined add-book">check</span>
+                </div>
+              </div>
+              <div class="results-details" data-index="9">
+                <div class="results-title">1984</div>
+                <div class="results-author">George Orwell</div>
+                <div class="results-pages">384</div>
+                <div class="results-status">
+                  <p>Have you read it?</p> 
+                  <a href="" class="yes">Yes</a>
+                  <a href="" class="no">No</a>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div> 
+    </dialog>
+
+
+    <dialog id="auto-generate">
+      <div class="dialog">
+        <div class="dialog-header">
+          <div class="close"><span class="material-symbols-outlined bold">close</span></div>
+          <div class="dialog-content" style="">
+            
+            <div id="gen1" class="dialog-card">
+              <div class="heading">Library Generator</div>
+              <form id="new-library">
+                <div class="form-group">
+                  <label for="gen">How many books do you want?</label>
+                  <input type="number" id="gen" name="gen" max="15">
+                </div>
+                <div class="form-group">
+                  <button>Generate</button>
+                </div>
+              </form>
+            </div>
+
+            <div id="gen2" class="dialog-card hide">
+              <div class="heading">Your library is not empty!</div>
+              <div class="message">
+                <p>This generator is meant to be used only when your libray is empty.</p>
+                <br>
+                <p>Empty your library and try again, or add books using other methods.</p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </div>
     </dialog>

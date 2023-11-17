@@ -44,6 +44,11 @@ main{
     "footer footer footer";
 }
 
+a:link, a:active, a:visited, a:hover{
+  color: magenta;
+  text-decoration: none;
+}
+
 
 /* ------------------------------------------------
 |        HEADER SECTION - TOP BAR                 |
@@ -182,11 +187,17 @@ header{
   font-size: 1.5rem;
 }
 
-.choice{
+.choice-add,
+.choice-search,
+.choice-suggest,
+.choice-generate{
   cursor: pointer;
 }
 
-.choice:hover{
+.choice-add:hover,
+.choice-search:hover,
+.choice-suggest:hover,
+.choice-generate:hover{
   color: var(--text-color);
 }
 
@@ -421,13 +432,25 @@ footer{
   font-size: 48px !important;
 }
 
+.material-icons.checked,
+.material-symbols-outlined.checked{
+  font-weight: 900;
+  font-size: 2rem !important;
+  color: green;
+  justify-self: center;
+}
+
 
 /* ------------------------------------------------
 |                 UTILITIES                       |
 --------------------------------------------------*/
 
 .hide{
-  display: none;
+  display: none !important;
+}
+
+.show{ 
+  display:contents;
 }
 
 .odd{
@@ -507,7 +530,8 @@ dialog:focus{
 }
 
 #book-form > .dialog > .dialog-content > .dialog-card {
-  gap: 10px;
+  /* gap: 10px; */
+  border: none;
 }
 
 #book-form  .heading{
@@ -535,17 +559,17 @@ form#add-book{
   margin-left: 25px;
   line-height: 1.8;
   font-size: 1.5rem;
-  color: var(--main-text-color)
+  color: var(--base-text-color);
 }
 
 .form-group select,
 .form-group input[type="text"],
 .form-group input[type="number"]{
   width: 100%;
-  padding: 5px 20px;
+  padding: 4px 16px;
   border-radius: 20px;
   outline: none;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   background-color: var(--base-text-color);
 }
 
@@ -557,7 +581,7 @@ form#add-book{
 .form-group input[type="submit"] {
   justify-self: center;
   width: 50%;
-  background-color: color-mix(in srgb, var(--text-color) 75%, black 25%);
+  background-color: color-mix(in srgb, var(--text-color) 90%, black 10%);
   
   padding: 10px 20px;
   font-size: 1.3rem;
@@ -569,8 +593,13 @@ form#add-book{
 
 .form-group button:hover{
   background-color: var(--text-color);
-  color: var(--alt-bg-color);
-  border: 1px solid var(--alt-text-color);
+  border: 3px solid var(--alt-text-color);
+  cursor: pointer;
+}
+
+input:focus,
+select:focus{
+  border: 3px solid var(--accent-color);
 }
 
 
@@ -641,6 +670,185 @@ form#add-book{
 }
 
 
+/* ------------------------------------------------
+|      MODALS - ONLINE BOOK SEARCH                |
+--------------------------------------------------*/
+
+
+
+#search{
+  width: 400px;
+  height: 400px;
+}
+
+#search .dialog-content{
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+#search .dialog-card{
+  border: none;
+  padding: 0;
+}
+
+#search .heading{
+  font-size: 2.3rem;
+  font-family: "Roboto";
+  color: var(--accent-color);
+  line-height: 2;
+  grid-column: 1/-1;
+  justify-self: center;
+}
+
+#search.results{
+  width: 70%;
+  height: 70%;
+}
+
+
+form#search-book{
+  width: 100%;
+  display: grid;
+  justify-self: center;
+  align-self: center;
+  justify-items: start;
+  align-items: end;
+  gap: 10px;
+  padding-top:20px;
+}
+
+#search .form-group button{
+  margin-top: 30px;
+}
+
+.dialog-results{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-rows: auto ;
+  gap: 25px 15px;
+  margin-top: 20px;
+}
+
+.results-card{
+  border-radius: 10px;
+  /* border: 1px solid black; */
+  border-left: 10px solid transparent;
+  display: grid;
+  place-items: center;
+  gap: 5px 15px; 
+
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  position: relative;
+}
+
+.results-cover{
+  /* padding:10px; */
+  place-self: center;
+
+}
+
+.results-cover > img{
+  padding:10px;
+}
+
+.results-details{
+  justify-self: left;
+}
+
+.results-title{
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--main-bg-color);
+  word-break: break-all;
+}
+
+.results-author{
+  color: var(--dark-stats);
+  font-size: 1.1rem;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.results-pages{
+  font-size: 1rem;
+  color: rebeccapurple;
+  font-weight: 600;
+}
+
+.results-status{
+  display: none;
+  position: absolute;
+  bottom: 30px;
+  border: 1px solid white;
+  background-color: brown;
+  width: 15vw;
+  height: 5vh;
+  text-align: center;
+  padding:10px;
+}
+
+.results-add, .checkmark{
+  padding-left: 12px;
+}
+
+.check{
+  border-left: 10px solid green;
+}
+
+
+/* ------------------------------------------------
+|      MODALS - AUTO GENERATE LIBRARY             |
+--------------------------------------------------*/
+
+
+#auto-generate{
+  width: 400px;
+  height: 400px;
+}
+
+#auto-generate .dialog-content{
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+#auto-generate .dialog-card{
+  border: none;
+  padding: 0;
+}
+
+#auto-generate .heading{
+  font-size: 2rem;
+  font-family: "Roboto";
+  color: var(--accent-color);
+  line-height: 1.5;
+  grid-column: 1/-1;
+  justify-self: center;
+  text-align: center;
+}
+
+#auto-generate form{
+  padding-top: 30px;
+
+}
+
+#auto-generate .form-group label{
+  margin-left: 5px;
+  line-height: 1.8;
+  font-size: 1.4rem;
+  color: var(--base-text-color);
+}
+
+#auto-generate .form-group button{
+  margin-top: 30px;
+}
+
+#auto-generate .message{
+  padding-top: 20px;
+  font-size: 1.5rem;
+  justify-self: center;
+  align-items: center;
+  text-align: center;
+  color: lightgray;
+}
 
 /* ------------------------------------------------
 |   MEDIA QUERIES - SMALL SCREENS                 |

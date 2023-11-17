@@ -29,8 +29,14 @@ const cards = document.querySelectorAll(".card");
 const choices = document.querySelectorAll(".choice");
 const menuItems = document.querySelectorAll(".menu-item");
 const gallery = document.querySelector("#gallery");
+
 let library = [];
 let randomClassics = [];
+
+
+/******************************************************************|
+/             Core Library Functions                               |
+*******************************************************************/
 
 // Book Constructor
 function Book(title, author="", pages=0, read="unread"){
@@ -41,11 +47,12 @@ function Book(title, author="", pages=0, read="unread"){
   this.isbn10 = null;  
   this.isbn13 = null;
   this.processed = null; // UserInput, OLAPI, NYTBAPI, Generated
-  this.cover = null;
-  this.info = () => { console.log(`"${this.title}" by ${this.author}, ${this.pages} pages and this book is ${this.read}, and it has ${ !this.cover ? "no cover image" : "cover image" }`) }
+  this.cover = null;  
+  this.info = () => { console.log(`"${this.title}" by ${this.author}, ${this.pages} pages and status is ${this.read}, and has ${!this.cover ? "no cover image" : "cover image"}`)};
   this.changeStatus = (stutus) => { this.read = stutus };
   this.updatePages = (newPages) => { this.pages = newPages };
   this.process = (type) => { this.processed = type};
+  this.updateCover = (newCover) => { this.cover = newCover};
 }
 
 // Generator to get a random item from the collection/array
@@ -57,23 +64,6 @@ function* shuffle(array) {
   }
 }
 
-const generateRandomPicks = (array, size) => {
-  let copy = shuffle(array);
-  let temp = [];
-  for(let i=0; i<size; i++){
-    temp.push( copy.next().value);
-  }
-  return temp;
-}
-
-function generateLibrary() {
-  randomClassics.forEach( (arr) => { 
-    let book = new Book(arr[0], arr[1], arr[2]);
-    book.process("Generated");
-    // library.push(book);  
-    observedLibrary.push(book); // pushing to library via proxy
-  })
-}
 
 function displayLibrary(){
   if( library.length === 0 ) return;
@@ -164,7 +154,6 @@ const removeItem = (e) => {
   if( library.length === 0) empty.classList.remove("hide"); // show empty library message
 }
 
-
 const changeStatus = (e) => {
   e.preventDefault();
   let card = e.target.parentNode.parentNode.parentNode;
@@ -212,16 +201,86 @@ const libraryObserver = {
 
 const observedLibrary = new Proxy(library, libraryObserver);
 
-//  Add New Book via User Input using Modal (Book Modal)
+
+/******************************************************************|
+/       Auto Generate Library  ( Auto Generate Modal)              |
+*******************************************************************/
+
+
+
+const generateRandomPicks = (array, size) => {
+  let copy = shuffle(array);
+  let temp = [];
+  for(let i=0; i<size; i++){
+    temp.push( copy.next().value);
+  }
+  return temp;
+}
+
+function generateLibrary() {
+  randomClassics.forEach( (arr) => { 
+    let book = new Book(arr[0], arr[1], arr[2]);
+    book.process("Generated");
+    // library.push(book);  
+    observedLibrary.push(book); // pushing to library via proxy
+  })
+}
+
+// randomClassics = generateRandomPicks(classics, 10);
+// generateLibrary();
+
+const generateBtn = document.querySelector(".generate");
+const choiceGenerate = document.querySelector(".choice-generate");
+const generateModal = document.querySelector("#auto-generate");
+const closeGenModal = document.querySelector("#auto-generate .close");
+const emptyLib = document.querySelector("#gen1");
+const notEmptyLib = document.querySelector("#gen2");
+const newLibrary = document.querySelector("#new-library");
+
+generateBtn.addEventListener("click", () => { generatorCheck() });
+choiceGenerate.addEventListener("click", () => { generatorCheck() });
+closeGenModal.addEventListener("click", () => { 
+  generateModal.close();
+  emptyLib.classList = ["dialog-card"];
+  notEmptyLib.classList = ["dialog-card hide"];
+});
+
+const generatorCheck = () => {
+  if( library.length !== 0 ){
+    emptyLib.classList = ["dialog-card hide"];
+    notEmptyLib.classList = ["dialog-card"];
+  } 
+  generateModal.showModal();
+}
+
+const userGenerated = (e) => {
+  e.preventDefault();
+  let value = e.target.elements.gen.value;
+  randomClassics = generateRandomPicks(classics, value);
+  newLibrary.reset();
+  generateLibrary();
+  refresh();
+  generateModal.close();
+}
+
+newLibrary.addEventListener("submit", (e) => userGenerated(e) );
+
+/******************************************************************|
+/   Add New Book via User Input using Modal (Add Book Modal)       |
+*******************************************************************/
 
 const addBookBtn = document.querySelector(".add-book");
+const choiceAdd = document.querySelector(".choice-add");
 const bookModal = document.querySelector("#book-form");
 const closeBookModal = document.querySelector("#book-form .close");
 const bookForm = document.querySelector("#book-form form");
 
 addBookBtn.addEventListener("click", () => { bookModal.showModal() });
+choiceAdd.addEventListener("click", () => { bookModal.showModal() });
 closeBookModal.addEventListener("click", () => { bookModal.close() } );
 bookForm.addEventListener("submit", (e) => { addNewBook(e) });
+
+
 
 const addNewBook = (e) => {
   e.preventDefault();
@@ -231,7 +290,7 @@ const addNewBook = (e) => {
   let pages = formFields.pages.value;
   let status = formFields.status.value;
   let book = new Book(title, author, pages, status);
-  book.processed = "UserInput";
+  book.process("UserInput");
   // library.push(book);
   observedLibrary.push(book);  // pushing via proxy
   refresh();
@@ -239,8 +298,9 @@ const addNewBook = (e) => {
   bookModal.close(); 
 }
 
-
-// NYTimes Bestseller Booklist API and related functions and Modal
+/******************************************************************|
+/ NYTimes Booklist API and related functions and Suggestions Modal |
+*******************************************************************/
 
 let NYTimesBooks = JSON.parse(localStorage.getItem("NYTBooks"));
 let listURL = "https://api.nytimes.com/svc/books/v3/lists/overview.json"
@@ -254,6 +314,7 @@ const listKeys = ["list_name", "books"];
 const bookKeys = ["author", "book_image", "primary_isbn13", "primary_isbn10", "publisher", "rank", "title", "list_name", "pages"]
 
 const suggestBtn = document.querySelector(".suggest");
+const choiceSuggest = document.querySelector(".choice-suggest");
 const suggestDialog = document.querySelector("#suggestions");
 const closeSuggestModal  = document.querySelector("#suggestions .close");
 
@@ -265,6 +326,7 @@ const clearSuggestions = () => {
 }
 
 suggestBtn.addEventListener("click", () => { populateSuggestions(); suggestDialog.showModal(); } );
+choiceSuggest.addEventListener("click", () => { populateSuggestions(); suggestDialog.showModal(); } );
 closeSuggestModal.addEventListener("click", () => { suggestDialog.close(); clearSuggestions(); });
 
 
@@ -327,7 +389,7 @@ function populateSuggestions(){
   const heading = document.createElement("div");
 
   heading.classList = ["heading"];
-  heading.textContent = "NYTimes Bestseller Book Suggestions";
+  heading.textContent = "NYTimes Suggestions";
   dialog.append(heading);
 
   randomSuggestions.forEach( (book, index, array ) => {
@@ -337,7 +399,10 @@ function populateSuggestions(){
     const title = document.createElement("div");
     const author = document.createElement("div");
     const button = document.createElement("a");
+    const check = document.createElement("div");
 
+    check.classList = ["checkmark"];
+    check.innerHTML = "<span class=\"material-symbols-outlined checked\">check</span>";
     button.dataset.index = index;
     img.src = book.book_image;
     title.textContent = book.title;
@@ -356,7 +421,11 @@ function populateSuggestions(){
     card.append(button);
     dialog.append(card);
 
-    button.addEventListener("click", (e) => { addSuggestedBook(e, button.dataset.index) });
+    button.addEventListener("click", (e) => { 
+      addSuggestedBook(e, button.dataset.index);
+      button.remove();
+      card.append(check);
+    });
   })
 }
 
@@ -371,7 +440,7 @@ const addSuggestedBook = (e, index) => {
   book.cover = cover;
   book.isbn10 = isbn10;
   book.isbn13 = isbn13;
-  book.processed = "NYTAPI";
+  book.process("NYTAPI");
   let isbn = ( !isbn13) ? isbn10 : isbn13;
   updatePages(book, isbn);
   observedLibrary.push(book);
@@ -389,11 +458,53 @@ function updatePages(book, isbn){
   .catch( error => console.log('Request failed', error));
 }
 
+
+/******************************************************************|
+/  Open Library API Search and related functions and Search Modal  |
+*******************************************************************/
+let searchResults = '';
+let extractedBooks = [];
+
+const findBook = document.querySelector(".find-book");
+const choiceSearch = document.querySelector(".choice-search");
+const searchForm = document.querySelector("#search-book");
+const addResult = document.querySelectorAll(".results-add");
+const searchDialog = document.querySelector("#search");
+const closeFind = document.querySelector("#search .close");
+
+closeFind.addEventListener("click", (e) => closeSearch(e) );
+findBook.addEventListener("click", (e) => searchDialog.showModal() );
+choiceSearch.addEventListener("click", (e) => searchDialog.showModal() );
+
+const closeSearch = () => { 
+  searchDialog.close();  
+  searchDialog.classList = [""];
+  searchDialog.querySelector(".dialog-content").style = "";
+  searchDialog.querySelector(".dialog-results").style = "display:none;";
+}
+
+
+function searchBook(userQuery){
+  const base = "https://openlibrary.org/search.json";
+  const query = `?q=${userQuery}`;
+  const fields = "&fields=title,author_name,isbn,cover_edition_key,number_of_pages_median&availability&limit=10";
+
+  fetch(`${base}${query}${fields}`, {method: "GET", mode: "cors", headers: [] })
+    .then( (response) => response.json() )
+    .then( (json) => { searchResults = json; /* console.log("results", json); */})
+    .then( () => { searchResults.docs.forEach( elem => extractedBooks.push(elem) ) })
+    .catch( error => console.log('Request failed', error));
+}
+
+
+//
+
+
 // Make call to get NYTimes Books on load, they'll be saved to localStorage
 fetchBooks();
 
-randomClassics = generateRandomPicks(classics, 10);
-generateLibrary();
+
+
 displayLibrary();
 
 
