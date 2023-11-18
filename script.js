@@ -109,7 +109,8 @@ function displayLibrary(){
     author.classList = ["book-author"];
     author.textContent = book.author;
     pages.classList = ["book-pages"];
-    pages.textContent = book.pages;
+    let bookPages = ( book.pages ) ? book.pages + " pages" : null;
+    pages.textContent = bookPages;
     actions.classList = ["card-actions"];
     trash.classList = ["trash"];
     trashIcon.classList = ["material-symbols-outlined md"];
@@ -279,8 +280,6 @@ addBookBtn.addEventListener("click", () => { bookModal.showModal() });
 choiceAdd.addEventListener("click", () => { bookModal.showModal() });
 closeBookModal.addEventListener("click", () => { bookModal.close() } );
 bookForm.addEventListener("submit", (e) => { addNewBook(e) });
-
-
 
 const addNewBook = (e) => {
   e.preventDefault();
@@ -471,40 +470,171 @@ const searchForm = document.querySelector("#search-book");
 const addResult = document.querySelectorAll(".results-add");
 const searchDialog = document.querySelector("#search");
 const closeFind = document.querySelector("#search .close");
+const returnedResults = document.querySelector(".dialog-results");
+
 
 closeFind.addEventListener("click", (e) => closeSearch(e) );
 findBook.addEventListener("click", (e) => searchDialog.showModal() );
 choiceSearch.addEventListener("click", (e) => searchDialog.showModal() );
+searchForm.addEventListener("submit", (e) => { processQueryAndSearch(e) });
 
 const closeSearch = () => { 
   searchDialog.close();  
   searchDialog.classList = [""];
   searchDialog.querySelector(".dialog-content").style = "";
   searchDialog.querySelector(".dialog-results").style = "display:none;";
+  searchForm.reset();
+  clearSearchResults();
 }
 
+const processQueryAndSearch = (e) => {
+  e.preventDefault();
+  let userQuery = e.target.elements.query.value;
+  if ( !userQuery ) { closeSearch(); return;}
+  const baseURL = "https://openlibrary.org/search.json";
+  const query = `?title=${userQuery}`;
+  const fields = "&fields=title,author_name,isbn,cover_edition_key,number_of_pages_median&sort=editions&limit=10";
+  
+  console.log(userQuery);
 
-function searchBook(userQuery){
-  const base = "https://openlibrary.org/search.json";
-  const query = `?q=${userQuery}`;
-  const fields = "&fields=title,author_name,isbn,cover_edition_key,number_of_pages_median&availability&limit=10";
-
-  fetch(`${base}${query}${fields}`, {method: "GET", mode: "cors", headers: [] })
+  fetch(`${baseURL}${query}${fields}`, {method: "GET", mode: "cors", headers: [] })
     .then( (response) => response.json() )
-    .then( (json) => { searchResults = json; /* console.log("results", json); */})
+    .then( (json) => { searchResults = json;  /* console.log("results", json); */})
     .then( () => { searchResults.docs.forEach( elem => extractedBooks.push(elem) ) })
+    .then( () => displayReturnedResults())
     .catch( error => console.log('Request failed', error));
 }
 
+function clearSearchResults(){
+  returnedResults.querySelectorAll(".results-card").forEach( (el) => { el.remove()});
+  extractedBooks = [];
+}
 
-//
+function displayReturnedResults(){
+  extractedBooks.forEach( (item, index, array) => {
+    const card = document.createElement("div");
+    const cover = document.createElement("div");
+    const coverImg = document.createElement("img");
+    const add = document.createElement("div");
+    const addIcon = document.createElement("span");
+    const check = document.createElement("div");
+    const checkIcon = document.createElement("span");
+    const details = document.createElement("div");
+    const title = document.createElement("div");
+    const author = document.createElement("div");
+    const pages = document.createElement("div");
+    const status = document.createElement("div");
+    const text = document.createElement("p");
+    const yes = document.createElement("a");
+    const no = document.createElement("a");
+    const localIndex = (index%2 === 0) ? "even" : "odd";
+    let author_name; 
+    const hasAuthor = (item) => { item.hasOwnProperty("author_name"); }
+
+    try{
+      hasAuthor(item);
+      author_name = ( Array.isArray(item.author_name)) ? item.author_name[0] : item.author_name;
+    } catch (e) {
+      console.log(e)
+    } 
+
+    text.textContent = "Have you read it?";
+    yes.textContent = "Yes";
+    yes.classList = ["yes"];
+    no.textContent = "No"
+    no.classList = ["no"];
+    status.classList = ["results-status"];
+    pages.classList = ["results-pages"];
+    let bookPages = ( item.number_of_pages_median ) ? item.number_of_pages_median + " pages" : null;
+    pages.textContent = bookPages;
+    author.classList = ["results-author"];
+    author.textContent= author_name;
+    title.classList = ["results-title"];
+    title.textContent = item.title;
+    details.classList = ["results-details"];
+    details.dataset.index = index;
+    addIcon.classList = ["material-symbols-outlined checked"];
+    addIcon.textContent = "add";
+    checkIcon.classList = ["material-symbols-outlined checked"];
+    checkIcon.textContent = "check"
+    add.classList = ["results-add"];
+    check.classList = ["checkmark"];
+    check.style = "display:none";
+    coverImg.src = `https://covers.openlibrary.org/b/olid/${item.cover_edition_key}-M.jpg`;
+    cover.classList = ["results-cover"];
+    card.classList = [`results-card ${localIndex}`];
+
+    status.append(text);
+    status.append(yes);
+    status.append(no);
+    add.append(addIcon);
+    check.append(checkIcon);
+    cover.append(coverImg);
+    cover.append(add);
+    cover.append(check);
+    details.append(title);
+    details.append(author);
+    details.append(pages);
+    details.append(status);
+    details.append(cover);
+    card.append(cover);
+    card.append(details);
+    returnedResults.append(card);
+
+    const common = (index, readStatus) => { 
+      add.remove();
+      check.style = "display:block";
+      card.classList.add("indicator");
+      status.style = "display:none;";
+      addOnlineBook(index, readStatus);
+    }
+
+    add.addEventListener("click", (e) => { status.style = "display:block";});
+    yes.addEventListener("click", (e) => common(details.dataset.index, "read") );
+    no.addEventListener("click", (e) => common(details.dataset.index, "unread") );
+
+  })
+
+  searchForm.reset();
+  searchDialog.classList = ["results"];
+  searchDialog.querySelector(".dialog-content").style = "display:none;";
+  searchDialog.querySelector(".dialog-results").style = ""; 
+}
+
+
+
+
+function addOnlineBook(index, status){
+  // console.log(index, status);
+  
+  let book = extractedBooks[index];
+  // console.log(book);
+
+  let title =  book.title;
+  let author = ( Array.isArray(book.author_name)) ? book.author_name[0] : book.author_name;
+  let pages = book.number_of_pages_median;
+  let isbn = ( Array.isArray(book.isbn) ) ? book.isbn[0] : book.isbn; 
+  let readStatus = status;
+  let cover = book.cover_edition_key;
+  let coverURL = ( !cover ) ? null : `https://covers.openlibrary.org/b/olid/${cover}-M.jpg`;
+
+  newBook = new Book(title, author, pages, readStatus);
+  isbn.length === 13 ? book.isbn13 = isbn : book.isbn10 = isbn;
+  newBook.updateCover(coverURL);
+  newBook.process("OLAPI");
+  console.log(newBook);
+
+  // myLibrary.push(book);
+  observedLibrary.push(newBook);
+  refresh()
+  
+}
+
 
 
 // Make call to get NYTimes Books on load, they'll be saved to localStorage
 fetchBooks();
 
 
-
 displayLibrary();
-
 

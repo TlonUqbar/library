@@ -9,12 +9,20 @@
   --main-text-color: color-mix( in srgb, var(--base-text-color), black 25%);
   --alt-text-color: rgba(210, 210, 210, 1);
   --accent-color: salmon;
-  --darker-main: color-mix( in srgb, var(--main-bg-color) 25%, black);
-  --dark-footer: color-mix( in srgb, var(--main-bg-color) 25%, black 50%);
-  --dark-card: color-mix( in srgb, var(--main-bg-color) 55%, black 25%);
-  --dark-menu: color-mix( in srgb, var(--main-bg-color) 50%, rgba(200, 200, 200, 1) 10%);
-  --dark-stats: color-mix( in srgb, var(--main-bg-color), rgba(255, 255, 255, 1) 15% );
+  --accent-alt-color: #5A4FCF;
+  --darker-main: color-mix( in srgb, var(--main-bg-color) 35%, black 65%);
+  --dark-footer: color-mix( in srgb, var(--main-bg-color) 50%, black 50%);
+  --dark-card: color-mix( in srgb, var(--main-bg-color) 75%, black 25%);
+  --dark-menu: color-mix( in srgb, var(--main-bg-color) 80%, rgba(200, 200, 200, 1) 20%);
+  --dark-stats: color-mix( in srgb, var(--main-bg-color) 85%, rgba(255, 255, 255, 1) 15% );
+  /* --dark-stats: #702963; */
+  /* --dark-menu: #B343F8; */
   --text-color:rgba(231, 146, 49, 1);
+  --link-color: magenta;
+  --link-color: #B342F8;
+  --search-ask-bg-color: rgba(229, 204, 255, 1);
+  --yes-bg-color: rgba(19, 136, 8, 1);
+  --no-bg-color: rgba(220, 26, 61, 1);
 }
 
 *{
@@ -45,7 +53,7 @@ main{
 }
 
 a:link, a:active, a:visited, a:hover{
-  color: magenta;
+  color: var(--link-color);
   text-decoration: none;
 }
 
@@ -619,6 +627,7 @@ select:focus{
   font-size: 2.5rem;
   color: var(--accent-color);
 }
+
 .dialog-card{
   border: 1px solid var(--alt-bg-color);
   display: grid;
@@ -658,22 +667,23 @@ select:focus{
 .add{
   padding: 4px 10px;
   border: 1px solid rebeccapurple;
-  color: var(--alt-bg-color);
+  background-color: var(--search-ask-bg-color);
+  color: var(--accent-alt-color);
   border-radius: 6px;
   font-weight: 600;
   font-family: "Fira Code";
 }
 
 .add:hover{
-  background-color:rgba(32, 0, 32, 1);
-  color: var(--text-color);
+  background-color: var(--dark-stats);
+  color: var(--search-ask-bg-color);
+  border: 1px solid var(--alt-text-color);
 }
 
 
 /* ------------------------------------------------
 |      MODALS - ONLINE BOOK SEARCH                |
 --------------------------------------------------*/
-
 
 
 #search{
@@ -705,7 +715,7 @@ select:focus{
 }
 
 
-form#search-book{
+#search-book{
   width: 100%;
   display: grid;
   justify-self: center;
@@ -720,9 +730,9 @@ form#search-book{
   margin-top: 30px;
 }
 
-.dialog-results{
+#search .dialog-results{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-template-rows: auto ;
   gap: 25px 15px;
   margin-top: 20px;
@@ -749,6 +759,8 @@ form#search-book{
 
 .results-cover > img{
   padding:10px;
+  width: 80px;
+  height: 110px;
 }
 
 .results-details{
@@ -759,7 +771,7 @@ form#search-book{
   font-size: 1.3rem;
   font-weight: 500;
   color: var(--main-bg-color);
-  word-break: break-all;
+  word-break: break-word;
 }
 
 .results-author{
@@ -775,14 +787,15 @@ form#search-book{
   font-weight: 600;
 }
 
-.results-status{
+.dialog-results .results-status{
   display: none;
   position: absolute;
-  bottom: 30px;
-  border: 1px solid white;
-  background-color: brown;
-  width: 15vw;
-  height: 5vh;
+  bottom: 35px;
+  left: 30px;
+  border: 1px solid var(--alt-bg-color);
+  background-color: var(--search-ask-bg-color);
+  width: 75%;
+  height: 50%;
   text-align: center;
   padding:10px;
 }
@@ -791,10 +804,35 @@ form#search-book{
   padding-left: 12px;
 }
 
-.check{
-  border-left: 10px solid green;
+.check, .indicator{
+  border-left: 10px solid var(--accent-alt-color);
 }
 
+.results-status p{
+  margin-bottom: 8px;
+}
+
+.yes, .no{
+  padding: 4px 10px;
+  margin: 0 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.yes:hover, .no:hover{
+  color:gold;
+  font-weight: 600;
+}
+
+.yes{
+  
+  background-color: var(--yes-bg-color);
+}
+
+.no{
+  background-color: var(--no-bg-color);
+}
 
 /* ------------------------------------------------
 |      MODALS - AUTO GENERATE LIBRARY             |
@@ -906,5 +944,14 @@ form#search-book{
 
   .empty-list{
     padding:20px 0;
+  }
+
+  #search.results{
+    width: 90%;
+    height: 90%;
+  }
+
+  #search .dialog-results{
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
