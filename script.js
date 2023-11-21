@@ -247,7 +247,8 @@ closeGenModal.addEventListener("click", () => {
 });
 
 const generatorCheck = () => {
-  if( library.length !== 0 ){
+  let generatedSize = library.filter( ({processed}) => processed === 'Generated').length;
+  if( generatedSize !== 0 ){
     emptyLib.classList = ["dialog-card hide"];
     notEmptyLib.classList = ["dialog-card"];
   } 
@@ -592,7 +593,6 @@ function displayReturnedResults(){
     add.addEventListener("click", (e) => { status.style = "display:block";});
     yes.addEventListener("click", (e) => common(details.dataset.index, "read") );
     no.addEventListener("click", (e) => common(details.dataset.index, "unread") );
-
   })
 
   searchForm.reset();
@@ -605,11 +605,8 @@ function displayReturnedResults(){
 
 
 function addOnlineBook(index, status){
-  // console.log(index, status);
   
   let book = extractedBooks[index];
-  // console.log(book);
-
   let title =  book.title;
   let author = ( Array.isArray(book.author_name)) ? book.author_name[0] : book.author_name;
   let pages = book.number_of_pages_median;
