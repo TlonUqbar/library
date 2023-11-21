@@ -115,6 +115,18 @@ header{
   gap: 40px;
 }
 
+.add-book, .find-book, .generate, .suggest{
+  cursor: pointer;
+}
+
+.add-book:hover, 
+.find-book:hover, 
+.generate:hover, 
+.suggest:hover{
+  font-size: 1.2rem;
+  color: var(--text-color);
+}
+
 /* ------------------------------------------------
 |        STATS SECTION - RIGHT SIDE BAR           |
 --------------------------------------------------*/
